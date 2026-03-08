@@ -96,3 +96,59 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+src
+│
+├── app.module.ts
+│
+├── config
+│ ├── database.config.ts
+│ ├── jwt.config.ts
+│
+├── common
+│ ├── guards
+│ │ ├── auth.guard.ts
+│ │ ├── roles.guard.ts
+│ │
+│ ├── decorators
+│ │ ├── roles.decorator.ts
+│ │ ├── current-user.decorator.ts
+│ │
+│ ├── interceptors
+│ │ ├── transform.interceptor.ts
+│ │
+│ ├── filters
+│ │ ├── http-exception.filter.ts
+│
+├── modules
+│
+│ ├── auth
+│ │ ├── auth.controller.ts
+│ │ ├── auth.service.ts
+│ │ ├── auth.module.ts
+│ │ ├── dto
+│ │ └── strategies
+│
+│ ├── users
+│ │ ├── users.controller.ts
+│ │ ├── users.service.ts
+│ │ ├── users.module.ts
+│ │ ├── dto
+│ │ └── schema
+│
+│ ├── category
+│ ├── subcategory
+│ ├── product
+│ ├── brand
+│ ├── review
+│ ├── cart
+│ ├── coupon
+│ ├── order
+│ ├── supplier
+│ ├── tax
+│ └── request-product
+│
+├── database
+│ └── schemas
+│
+└── utils

@@ -1,0 +1,350 @@
+# E-Commerce Database Architecture
+
+هذا الملف يحتوي على التصميم الكامل لقاعدة البيانات الخاصة بالمتجر الإلكتروني، بالإضافة إلى مخطط العلاقات (ERD) المرسوم بناءً على المعطيات و الجداول.
+
+## مخطط العلاقات (ERD - Entity Relationship Diagram)
+
+```mermaid
+erDiagram
+    USER ||--o{ ORDER : "places (1:N)"
+    USER ||--o{ REVIEW : "writes (1:N)"
+    USER ||--o| CART : "has (1:1)"
+    USER ||--o{ REQUEST_PRODUCT : "requests (1:N)"
+    
+    CATEGORY ||--o{ SUB_CATEGORY : "contains (1:N)"
+    CATEGORY ||--o{ PRODUCT : "has (1:N)"
+    SUB_CATEGORY ||--o{ PRODUCT : "has (1:N)"
+    BRAND ||--o{ PRODUCT : "owns (1:N)"
+    
+    PRODUCT ||--o{ REVIEW : "receives (1:N)"
+    
+    CART ||--o{ CART_ITEM : "contains"
+    PRODUCT ||--o{ CART_ITEM : "added to"
+    
+    ORDER ||--o{ ORDER_ITEM : "contains"
+    PRODUCT ||--o{ ORDER_ITEM : "ordered from"
+    
+    CART }o--o{ COUPON : "can apply (M:N)"
+
+    USER {
+        ObjectId _Id PK
+        string name
+        string email
+        string password
+        string Role
+        string Avatar
+        int Age
+        string PhoneNumber
+        string Address
+        boolean Active
+        string VerificationCode
+        string gender
+        Date timestamps
+    }
+
+    CATEGORY {
+        ObjectId _Id PK
+        string name
+        string image
+        Date timestamps
+    }
+
+    SUB_CATEGORY {
+        ObjectId _Id PK
+        string name
+        ObjectId category FK
+        Date timestamps
+    }
+
+    PRODUCT {
+        ObjectId _Id PK
+        string title
+        string description
+        int quantity
+        string ImageCover
+        string[] Images
+        int sold
+        Number Price
+        Number PriceAfterDiscount
+        string[] color
+        ObjectId Category FK
+        ObjectId SubCategory FK
+        ObjectId brand FK
+        Number RatingsAverage
+        int RatingsQuantity
+        Date timestamps
+    }
+
+    REVIEW {
+        ObjectId _Id PK
+        string reviewText
+        int Rating
+        ObjectId user FK
+        ObjectId Product FK
+        Date timestamps
+    }
+
+    BRAND {
+        ObjectId _Id PK
+        string name
+        string image
+        Date timestamps
+    }
+
+    CART {
+        ObjectId _Id PK
+        Number TotalPrice
+        Number totalPriceAfterDiscount
+        ObjectId User FK
+        Date timestamps
+    }
+
+    CART_ITEM {
+        ObjectId productId FK
+        int quantity ""
+        string color
+    }
+
+    COUPON {
+        ObjectId _Id PK
+        string name
+        Date Expirdate
+        Number Discount
+        Date timestamps
+    }
+
+    REQUEST_PRODUCT {
+        ObjectId _Id PK
+        string titleNeed
+        string details
+        int qauntity
+        string Category
+        ObjectId User FK
+        Date timestamps
+    }
+
+    SUPPLIER {
+        ObjectId _Id PK
+        string Name
+        string website
+        Date timestamps
+    }
+
+    TAX {
+        ObjectId _Id PK
+        Number texPrice
+        Number shippingPrice
+        Date timestamps
+    }
+
+    ORDER {
+        ObjectId _Id PK
+        ObjectId User FK
+        Number texPrice
+        Number shippingPrice
+        Number totalOrderPrice
+        string paymentMethodType
+        boolean isPaid
+        Date paidAt
+        boolean isDeliverd
+        Date deliverdAt
+        string shippingAddress
+        Date timestamps
+    }
+    
+    ORDER_ITEM {
+        ObjectId _Id
+        int quantity
+        string color
+        Number price
+    }
+```
+
+---
+
+## 1. الكيانات الأساسية (Core Entities)
+
+### المستخدم (User)
+- المحور الأساسي، يمكن أن يكون "مسؤول" (Admin) أو "مستخدم عادي" (User).
+- **العمليات للإدمن:** Create, Update, Delete, Get All, Get One.
+- **العمليات للمستخدم:** Delete, Get One.
+
+| Attribute | Notes |
+| :--- | :--- |
+| `_Id` | ObjectId, read only, auto-increment |
+| `name` | String, min 3, max 30 |
+| `email` | String, unique mail |
+| `password` | String, min 3, max 20 |
+| `Role` | Enum ["Admin", "User"] |
+| `Avatar` | String, Optional |
+| `Age` | Number, Optional |
+| `PhoneNumber` | Number, Mobile Phone, Length 11 (EG Numbers), Optional |
+| `Address` | String, Optional |
+| `Active` | Boolean, Enum [False, True] |
+| `VerificationCode` | String |
+| `gender` | String, Enum ["male", "female"] |
+| `timestamps` | Date, auto-increment |
+
+### المنتج (Product)
+- يحتوي على تفاصيل السلعة ويرتبط بقسم وبراند معين.
+- **العمليات للإدمن:** Create, Update, Delete, Get All, Get One.
+- **العمليات للمستخدم:** Get.
+
+| Attribute | Notes |
+| :--- | :--- |
+| `_Id` | ObjectId, read only, auto-increment |
+| `title` | String, min 3 |
+| `description` | String, min 20 |
+| `quantity` | Number, min 1, max 500, default: 1 |
+| `Image Cover` | String, URL |
+| `Images` | List Of String, URL |
+| `sold` | Number, default: 0 |
+| `Price` | Number, Min 1, Max 20000 |
+| `PriceAfterDiscount`| Number, Max 20000, default: 0 |
+| `color` | List Of String |
+| `Category` | ObjectId Ref: "Category" |
+| `Sub Category`| ObjectId Ref: "Sub Category" |
+| `brand` | ObjectId Ref: "Brand" |
+| `Ratings Average` | Number, default: 0 |
+| `Ratings Quantity`| Number, default: 0 |
+| `timestamps` | Date, auto-increment |
+
+### الطلبات (Orders)
+- تسجل عمليات الشراء التي قام بها المستخدم شاملة حالة الدفع والتوصيل.
+- **العمليات للإدمن:** Get All, Get One, update Paid Cash.
+- **العمليات للمستخدم:** Create, Get.
+- **Stripe:** update Paid Card.
+
+| Attribute | Notes |
+| :--- | :--- |
+| `_Id` | ObjectId, read only, auto-increment |
+| [User](file:///f:/iti%20material/18.NestJS/day1/day1/day1/src/modules/users/users.controller.ts#25-28) | ObjectId Ref: "User" |
+| `cartItems` | List Of Product (ObjectId Ref:"Product"), (_Id, quantity, color, price) |
+| `texPrice` | Number, default: 0 |
+| `shippingPrice` | Number, default: 0 |
+| `totalOrderPrice` | Number |
+| `paymentMethodType`| String, Enum: ["cash", "card"] |
+| `isPaid` | Boolean, default: false |
+| `paidAt` | Date |
+| `isDeliverd` | Boolean, default: false |
+| `deliverdAt` | Date |
+| `shippingAddress` | Object: {alias, details, phone, city, postalCode} |
+| `timestamps` | Date, auto-increment |
+
+---
+
+## 2. علاقات الأقسام والتصنيف
+
+### القسم (Category)
+- **العمليات للإدمن:** Create, Update, Delete, Get All, Get One.
+- **العمليات للمستخدم:** Get.
+
+| Attribute | Notes |
+| :--- | :--- |
+| `_Id` | ObjectId, read only, auto-increment |
+| `name` | String, min 3, max 30 |
+| `image` | String, URL |
+| `timestamps` | Date, auto-increment |
+
+### الأقسام الفرعية (Sub Category)
+- **العمليات للإدمن:** Create, Update, Delete, Get All, Get One.
+- **العمليات للمستخدم:** Get.
+
+| Attribute | Notes |
+| :--- | :--- |
+| `_Id` | ObjectId, read only, auto-increment |
+| `name` | String, min 3, max 20 |
+| `category` | ObjectId Ref: "Category" |
+| `timestamps` | Date, auto-increment |
+
+### الماركات (Brand)
+- **العمليات للإدمن:** Create, Update, Delete, Get All, Get One.
+- **العمليات للمستخدم:** Get.
+
+| Attribute | Notes |
+| :--- | :--- |
+| `_Id` | ObjectId, read only, auto-increment |
+| `name` | String, Min 3, Max 100 |
+| `image` | String, URL |
+| `timestamps` | Date, auto-increment |
+
+---
+
+## 3. نظام الشراء والخصومات
+
+### عربة التسوق (Cart)
+- **العمليات للإدمن:** Get All, Get One.
+- **العمليات للمستخدم:** Create, Update, Delete, Get One, Coupons.
+
+| Attribute | Notes |
+| :--- | :--- |
+| `_Id` | ObjectId, read only, auto-increment |
+| `Cart Items` | List Of Product [{productId, quantity:1, color:""}] |
+| `Total Price` | Number |
+| `totalPriceAfterDiscount` | Number |
+| `Coupons` | List Of Coupons [{name, couponId}] |
+| [User](file:///f:/iti%20material/18.NestJS/day1/day1/day1/src/modules/users/users.controller.ts#25-28) | ObjectId Ref: "User" |
+| `timestamps` | Date, auto-increment |
+
+### الكوبون (Coupon)
+- **العمليات للإدمن:** Create, Update, Delete, Get All, Get One.
+
+| Attribute | Notes |
+| :--- | :--- |
+| `_Id` | ObjectId, read only, auto-increment |
+| `name` | String |
+| `Expirdate` | Date |
+| `Discount` | Number, Min 0 |
+| `timestamps` | Date, auto-increment |
+
+### الضرائب والشحن (Tax)
+- **العمليات للإدمن:** Create, Update, Delete, Get.
+
+| Attribute | Notes |
+| :--- | :--- |
+| `_Id` | ObjectId, read only, auto-increment |
+| `texPrice` | Number |
+| `shippingPrice` | Number |
+| `timestamps` | Date, auto-increment |
+
+---
+
+## 4. التفاعل والطلبات الخاصة
+
+### التقييم (Review)
+- **العمليات للإدمن:** Get All by single product, Get Reviews on Single User.
+- **العمليات للمستخدم:** Create, Update, Delete, Get All.
+
+| Attribute | Notes |
+| :--- | :--- |
+| `_Id` | ObjectId, read only, auto-increment |
+| `reviewText` | String, min 3 |
+| `Rating` | Number, Min 1, Max 5 |
+| `user` | ObjectId Ref: "User" |
+| `Product` | ObjectId Ref: "Product" |
+| `timestamps` | Date, auto-increment |
+
+### طلب منتج (Request Product)
+- **العمليات للإدمن:** Get All, Get One.
+- **العمليات للمستخدم:** Create, Update, Delete, Get One.
+
+| Attribute | Notes |
+| :--- | :--- |
+| `_Id` | ObjectId, read only, auto-increment |
+| `titleNeed` | String |
+| `details` | String, Min 5 |
+| `qauntity` | Number, Min 1 |
+| `Category` | String |
+| [User](file:///f:/iti%20material/18.NestJS/day1/day1/day1/src/modules/users/users.controller.ts#25-28) | ObjectId Ref: "User" |
+| `timestamps` | Date, auto-increment |
+
+### الموردين (Suppliers)
+- **العمليات للإدمن:** Create, Update, Delete, Get All, Get One.
+- **العمليات للمستخدم:** Get.
+
+| Attribute | Notes |
+| :--- | :--- |
+| `_Id` | ObjectId, read only, auto-increment |
+| `Name` | String |
+| `website` | String, URL |
+| `timestamps` | Date, auto-increment |

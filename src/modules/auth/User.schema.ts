@@ -23,12 +23,12 @@ export class User extends Document {
   @Prop({
     min: [11, 'phone number must be at least 11 digits'],
     max: [11, 'phone number must be at most 11 digits'],
-    match: [/^[01]\d{9}$/, 'phone number must be at least 11 digits'],
+    // match: [/^[01]\d{9}$/, 'phone number must be at least 11 digits'],
   })
   phoneNumber: string;
   @Prop()
   address: string;
-  @Prop({ enum: [false, true] })
+  @Prop({ type: Boolean, default: false, required: false })
   active: boolean;
   @Prop()
   vervactionCode: string;

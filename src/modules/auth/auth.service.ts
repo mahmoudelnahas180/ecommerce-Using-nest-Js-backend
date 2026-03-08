@@ -1,4 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { UserSchema } from './User.schema';
@@ -13,7 +18,6 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
   async signUp(createUserDto: CreateUserDto) {
-    console.log(createUserDto);
     const existUser = await this.userModel.findOne({
       email: createUserDto.email,
     });
@@ -31,14 +35,17 @@ export class AuthService {
   async signIn(signInDto: SignInDto) {
     const user = await this.userModel.findOne({ email: signInDto.email });
     if (!user) {
-      throw new Error('User not found');
+      throw new ForbiddenException('User not found');
+    }
+    if (!user.active) {
+      throw new ForbiddenException('User not active');
     }
     const isPasswordMatched = await bcrypt.compare(
       signInDto.password,
       user.password,
     );
     if (!isPasswordMatched) {
-      throw new Error('vaild password');
+      throw new ForbiddenException('vaild password');
     }
     const token = await this.jwtService.signAsync({
       email: user.email,

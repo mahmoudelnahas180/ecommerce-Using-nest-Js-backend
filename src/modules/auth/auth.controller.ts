@@ -11,8 +11,8 @@ import {
 import { AuthService } from './auth.service';
 import { CreateUserDto, SignInDto } from './CreateUserDto';
 import { UseInterceptors } from '@nestjs/common';
-import { TransformInterceptor } from './transform/transform.interceptor';
-import { AuthGuard } from './auth/auth.guard';
+import { TransformInterceptor } from '../../common/interceptors/transform.interceptor';
+import { AuthGuard } from '../../common/Guard/GuardAuth/auth.guard';
 @UseInterceptors(TransformInterceptor)
 @Controller('auth')
 export class AuthController {
