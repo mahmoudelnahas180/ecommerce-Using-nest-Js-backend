@@ -9,10 +9,7 @@ export class User extends Document {
   name: string;
   @Prop({ unique: true, match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ })
   email: string;
-  @Prop({
-    min: [3, 'password must be at least 3 characters'],
-    maxlength: [20, 'password must be at most 20 characters'],
-  })
+  @Prop()
   password: string;
   @Prop({ enum: ['admin', 'user'], default: 'user' })
   role: string;

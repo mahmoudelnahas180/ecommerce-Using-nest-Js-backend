@@ -44,6 +44,7 @@ export class AuthService {
       email: user.email,
       role: user.role,
       id: user._id,
+      name: user.name,
     });
     console.log(token);
     return { token };

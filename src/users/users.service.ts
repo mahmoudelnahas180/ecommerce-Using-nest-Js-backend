@@ -7,7 +7,7 @@ export class UsersService {
   getUsers(): any {
     return {
       message: 'Users fetched successfully',
-      data: [],
+      data: [4, 5, 6],
     };
   }
   createUser(body: ICreateUser): ICreateUserResponse {
