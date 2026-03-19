@@ -1,13 +1,30 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { UsersModule } from './users/users.module';
+import { UsersModule } from './modules/users/users.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
+import { CategoryModule } from './modules/category/category.module';
+import { SubCategoryModule } from './modules/sub-category/sub-category.module';
+import { ProductModule } from './modules/product/product.module';
+import { ProductController } from './modules/product/product.controller';
+import { BrandModule } from './modules/brand/brand.module';
+// sss
 
 @Module({
-  imports: [UsersModule],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    MongooseModule.forRootAsync({
+      useFactory: () => ({
+        uri: process.env.MONGO_URL || 'mongodb://localhost:27017/ecommerce',
+      }),
+    }),
+    UsersModule,
+    AuthModule,
+    CategoryModule,
+    SubCategoryModule,
+    ProductModule,
+    BrandModule,
+  ],
+  controllers: [ProductController],
 })
 export class AppModule {}
-
-

@@ -1,0 +1,625 @@
+{
+  "info": {
+    "name": "E-Commerce API - Full Collection",
+    "_postman_id": "ecommerce-full-collection-2026",
+    "description": "Comprehensive collection for the e-commerce backend endpoints.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "varUri",
+      "value": "http://localhost:4000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "categoryId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "subCategoryId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "brandId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "productId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "reviewId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "itemId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "couponId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "orderId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "requestProductId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "supplierId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "taxId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "auth": { "type": "noauth" },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Ahmed Ali\",\n  \"email\": \"ahmed@example.com\",\n  \"password\": \"P@ssw0rd123\",\n  \"confirmPassword\": \"P@ssw0rd123\"\n}"
+            },
+            "url": "{{varUri}}/auth/register"
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "auth": { "type": "noauth" },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"ahmed@example.com\",\n  \"password\": \"P@ssw0rd123\"\n}"
+            },
+            "url": "{{varUri}}/auth/login"
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "url": "{{varUri}}/auth/logout"
+          }
+        },
+        {
+          "name": "Verify Email",
+          "request": {
+            "method": "POST",
+            "auth": { "type": "noauth" },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"ahmed@example.com\",\n  \"code\": \"123456\"\n}"
+            },
+            "url": "{{varUri}}/auth/verify-email"
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "auth": { "type": "noauth" },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"ahmed@example.com\"\n}" },
+            "url": "{{varUri}}/auth/forgot-password"
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "auth": { "type": "noauth" },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"reset-token\",\n  \"newPassword\": \"NewP@ss123\",\n  \"confirmPassword\": \"NewP@ss123\"\n}"
+            },
+            "url": "{{varUri}}/auth/reset-password"
+          }
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"P@ssw0rd123\",\n  \"newPassword\": \"NewP@ss123\"\n}"
+            },
+            "url": "{{varUri}}/auth/change-password"
+          }
+        },
+        {
+          "name": "Me",
+          "request": {
+            "method": "GET",
+            "url": "{{varUri}}/auth/me"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        { "name": "Admin - Get Users", "request": { "method": "GET", "url": "{{varUri}}/users" } },
+        { "name": "Admin - Get User By ID", "request": { "method": "GET", "url": "{{varUri}}/users/{{userId}}" } },
+        {
+          "name": "Admin - Update User",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Updated User\",\n  \"phone\": \"01000000000\"\n}" },
+            "url": "{{varUri}}/users/{{userId}}"
+          }
+        },
+        { "name": "Admin - Delete User", "request": { "method": "DELETE", "url": "{{varUri}}/users/{{userId}}" } },
+        { "name": "Admin - Activate User", "request": { "method": "PATCH", "url": "{{varUri}}/users/{{userId}}/activate" } },
+        { "name": "Admin - Deactivate User", "request": { "method": "PATCH", "url": "{{varUri}}/users/{{userId}}/deactivate" } },
+        { "name": "User - Me", "request": { "method": "GET", "url": "{{varUri}}/users/me" } },
+        {
+          "name": "User - Update Me",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"My New Name\",\n  \"address\": \"Cairo, Egypt\"\n}" },
+            "url": "{{varUri}}/users/updateMe"
+          }
+        },
+        { "name": "User - Delete Me", "request": { "method": "DELETE", "url": "{{varUri}}/users/deleteMe" } },
+        {
+          "name": "User - Change Password",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"OldP@ss123\",\n  \"newPassword\": \"NewP@ss123\"\n}"
+            },
+            "url": "{{varUri}}/users/changePassword"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "Admin - Create Category",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Electronics\",\n  \"image\": \"https://example.com/category.jpg\"\n}" },
+            "url": "{{varUri}}/categories"
+          }
+        },
+        {
+          "name": "Admin - Update Category",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Mobiles\"\n}" },
+            "url": "{{varUri}}/categories/{{categoryId}}"
+          }
+        },
+        { "name": "Admin - Delete Category", "request": { "method": "DELETE", "url": "{{varUri}}/categories/{{categoryId}}" } },
+        { "name": "Public - Get Categories", "request": { "method": "GET", "auth": { "type": "noauth" }, "url": "{{varUri}}/categories" } },
+        { "name": "Public - Get Category By ID", "request": { "method": "GET", "auth": { "type": "noauth" }, "url": "{{varUri}}/categories/{{categoryId}}" } }
+      ]
+    },
+    {
+      "name": "SubCategories",
+      "item": [
+        {
+          "name": "Admin - Create SubCategory",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Smartphones\",\n  \"categoryId\": \"{{categoryId}}\"\n}"
+            },
+            "url": "{{varUri}}/subcategories"
+          }
+        },
+        {
+          "name": "Admin - Update SubCategory",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Mobile Accessories\"\n}" },
+            "url": "{{varUri}}/subcategories/{{subCategoryId}}"
+          }
+        },
+        { "name": "Admin - Delete SubCategory", "request": { "method": "DELETE", "url": "{{varUri}}/subcategories/{{subCategoryId}}" } },
+        { "name": "Public - Get SubCategories", "request": { "method": "GET", "auth": { "type": "noauth" }, "url": "{{varUri}}/subcategories" } },
+        { "name": "Public - Get SubCategory By ID", "request": { "method": "GET", "auth": { "type": "noauth" }, "url": "{{varUri}}/subcategories/{{subCategoryId}}" } },
+        { "name": "Public - Get Category SubCategories", "request": { "method": "GET", "auth": { "type": "noauth" }, "url": "{{varUri}}/categories/{{categoryId}}/subcategories" } }
+      ]
+    },
+    {
+      "name": "Brands",
+      "item": [
+        {
+          "name": "Admin - Create Brand",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Apple\",\n  \"logo\": \"https://example.com/apple.png\"\n}" },
+            "url": "{{varUri}}/brands"
+          }
+        },
+        {
+          "name": "Admin - Update Brand",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Apple Inc.\"\n}" },
+            "url": "{{varUri}}/brands/{{brandId}}"
+          }
+        },
+        { "name": "Admin - Delete Brand", "request": { "method": "DELETE", "url": "{{varUri}}/brands/{{brandId}}" } },
+        { "name": "Public - Get Brands", "request": { "method": "GET", "auth": { "type": "noauth" }, "url": "{{varUri}}/brands" } },
+        { "name": "Public - Get Brand By ID", "request": { "method": "GET", "auth": { "type": "noauth" }, "url": "{{varUri}}/brands/{{brandId}}" } }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Admin - Create Product",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"iPhone 15\",\n  \"description\": \"Latest iPhone\",\n  \"price\": 1200,\n  \"stock\": 20,\n  \"category\": \"{{categoryId}}\",\n  \"subCategory\": \"{{subCategoryId}}\",\n  \"brand\": \"{{brandId}}\"\n}"
+            },
+            "url": "{{varUri}}/products"
+          }
+        },
+        {
+          "name": "Admin - Update Product",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"price\": 1100,\n  \"stock\": 30\n}" },
+            "url": "{{varUri}}/products/{{productId}}"
+          }
+        },
+        { "name": "Admin - Delete Product", "request": { "method": "DELETE", "url": "{{varUri}}/products/{{productId}}" } },
+        { "name": "Public - Get Products", "request": { "method": "GET", "auth": { "type": "noauth" }, "url": "{{varUri}}/products" } },
+        { "name": "Public - Get Product By ID", "request": { "method": "GET", "auth": { "type": "noauth" }, "url": "{{varUri}}/products/{{productId}}" } },
+        { "name": "Filter - keyword", "request": { "method": "GET", "auth": { "type": "noauth" }, "url": "{{varUri}}/products?keyword=iphone" } },
+        { "name": "Filter - category", "request": { "method": "GET", "auth": { "type": "noauth" }, "url": "{{varUri}}/products?category=electronics" } },
+        { "name": "Filter - brand", "request": { "method": "GET", "auth": { "type": "noauth" }, "url": "{{varUri}}/products?brand=apple" } },
+        { "name": "Filter - price gte", "request": { "method": "GET", "auth": { "type": "noauth" }, "url": "{{varUri}}/products?price[gte]=100" } },
+        { "name": "Sort - price", "request": { "method": "GET", "auth": { "type": "noauth" }, "url": "{{varUri}}/products?sort=price" } },
+        { "name": "Pagination - page 2", "request": { "method": "GET", "auth": { "type": "noauth" }, "url": "{{varUri}}/products?page=2" } }
+      ]
+    },
+    {
+      "name": "Reviews",
+      "item": [
+        {
+          "name": "User - Create Review",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": \"{{productId}}\",\n  \"rating\": 5,\n  \"comment\": \"Excellent product\"\n}"
+            },
+            "url": "{{varUri}}/reviews"
+          }
+        },
+        {
+          "name": "User - Update Review",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"rating\": 4,\n  \"comment\": \"Updated comment\"\n}" },
+            "url": "{{varUri}}/reviews/{{reviewId}}"
+          }
+        },
+        { "name": "User - Delete Review", "request": { "method": "DELETE", "url": "{{varUri}}/reviews/{{reviewId}}" } },
+        { "name": "User - My Reviews", "request": { "method": "GET", "url": "{{varUri}}/reviews/myReviews" } },
+        { "name": "Public - Product Reviews", "request": { "method": "GET", "auth": { "type": "noauth" }, "url": "{{varUri}}/products/{{productId}}/reviews" } },
+        { "name": "Admin - All Reviews", "request": { "method": "GET", "url": "{{varUri}}/reviews" } },
+        { "name": "Admin - Reviews By User", "request": { "method": "GET", "url": "{{varUri}}/reviews/user/{{userId}}" } }
+      ]
+    },
+    {
+      "name": "Cart",
+      "item": [
+        {
+          "name": "Add To Cart",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": \"{{productId}}\",\n  \"quantity\": 1\n}"
+            },
+            "url": "{{varUri}}/cart"
+          }
+        },
+        { "name": "Get Cart", "request": { "method": "GET", "url": "{{varUri}}/cart" } },
+        {
+          "name": "Update Cart Item",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"quantity\": 2\n}" },
+            "url": "{{varUri}}/cart/{{itemId}}"
+          }
+        },
+        { "name": "Remove Cart Item", "request": { "method": "DELETE", "url": "{{varUri}}/cart/{{itemId}}" } },
+        { "name": "Clear Cart", "request": { "method": "DELETE", "url": "{{varUri}}/cart" } },
+        {
+          "name": "Apply Coupon",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"coupon\": \"SAVE20\"\n}" },
+            "url": "{{varUri}}/cart/apply-coupon"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Coupons",
+      "item": [
+        {
+          "name": "Create Coupon",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"SAVE20\",\n  \"discount\": 20,\n  \"expiresAt\": \"2026-12-31T23:59:59.000Z\"\n}"
+            },
+            "url": "{{varUri}}/coupons"
+          }
+        },
+        { "name": "Get Coupons", "request": { "method": "GET", "url": "{{varUri}}/coupons" } },
+        { "name": "Get Coupon By ID", "request": { "method": "GET", "url": "{{varUri}}/coupons/{{couponId}}" } },
+        {
+          "name": "Update Coupon",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"discount\": 25\n}" },
+            "url": "{{varUri}}/coupons/{{couponId}}"
+          }
+        },
+        { "name": "Delete Coupon", "request": { "method": "DELETE", "url": "{{varUri}}/coupons/{{couponId}}" } }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "User - Create Order",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shippingAddress\": {\n    \"city\": \"Cairo\",\n    \"street\": \"Nasr City\",\n    \"phone\": \"01000000000\"\n  },\n  \"paymentMethod\": \"cash\"\n}"
+            },
+            "url": "{{varUri}}/orders"
+          }
+        },
+        { "name": "User - My Orders", "request": { "method": "GET", "url": "{{varUri}}/orders/myOrders" } },
+        { "name": "User - Get Order By ID", "request": { "method": "GET", "url": "{{varUri}}/orders/{{orderId}}" } },
+        { "name": "Admin - Get Orders", "request": { "method": "GET", "url": "{{varUri}}/orders" } },
+        { "name": "Admin - Get Order By ID", "request": { "method": "GET", "url": "{{varUri}}/orders/{{orderId}}" } },
+        { "name": "Admin - Pay Order", "request": { "method": "PATCH", "url": "{{varUri}}/orders/{{orderId}}/pay" } },
+        { "name": "Admin - Deliver Order", "request": { "method": "PATCH", "url": "{{varUri}}/orders/{{orderId}}/deliver" } }
+      ]
+    },
+    {
+      "name": "Stripe Payment",
+      "item": [
+        {
+          "name": "Checkout Session",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderId\": \"{{orderId}}\"\n}"
+            },
+            "url": "{{varUri}}/checkout/session"
+          }
+        },
+        {
+          "name": "Stripe Webhook",
+          "request": {
+            "method": "POST",
+            "auth": { "type": "noauth" },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{}" },
+            "url": "{{varUri}}/webhook/stripe"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Request Product",
+      "item": [
+        {
+          "name": "User - Create Request",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"PlayStation 5\",\n  \"details\": \"Need latest model\"\n}"
+            },
+            "url": "{{varUri}}/request-product"
+          }
+        },
+        { "name": "User - Get Request By ID", "request": { "method": "GET", "url": "{{varUri}}/request-product/{{requestProductId}}" } },
+        {
+          "name": "User - Update Request",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"details\": \"Need digital edition\"\n}" },
+            "url": "{{varUri}}/request-product/{{requestProductId}}"
+          }
+        },
+        { "name": "User - Delete Request", "request": { "method": "DELETE", "url": "{{varUri}}/request-product/{{requestProductId}}" } },
+        { "name": "Admin - Get Requests", "request": { "method": "GET", "url": "{{varUri}}/request-product" } },
+        { "name": "Admin - Get Request By ID", "request": { "method": "GET", "url": "{{varUri}}/request-product/{{requestProductId}}" } }
+      ]
+    },
+    {
+      "name": "Suppliers",
+      "item": [
+        {
+          "name": "Admin - Create Supplier",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Global Supplier\",\n  \"email\": \"supplier@example.com\",\n  \"phone\": \"01000000000\"\n}"
+            },
+            "url": "{{varUri}}/suppliers"
+          }
+        },
+        { "name": "Admin/User - Get Suppliers", "request": { "method": "GET", "url": "{{varUri}}/suppliers" } },
+        { "name": "Admin - Get Supplier By ID", "request": { "method": "GET", "url": "{{varUri}}/suppliers/{{supplierId}}" } },
+        {
+          "name": "Admin - Update Supplier",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"phone\": \"01111111111\"\n}" },
+            "url": "{{varUri}}/suppliers/{{supplierId}}"
+          }
+        },
+        { "name": "Admin - Delete Supplier", "request": { "method": "DELETE", "url": "{{varUri}}/suppliers/{{supplierId}}" } }
+      ]
+    },
+    {
+      "name": "Tax & Shipping",
+      "item": [
+        {
+          "name": "Admin - Create Tax",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"country\": \"EG\",\n  \"taxRate\": 14,\n  \"shippingFee\": 50\n}"
+            },
+            "url": "{{varUri}}/tax"
+          }
+        },
+        { "name": "Admin - Get Tax", "request": { "method": "GET", "url": "{{varUri}}/tax" } },
+        {
+          "name": "Admin - Update Tax",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"shippingFee\": 60\n}" },
+            "url": "{{varUri}}/tax/{{taxId}}"
+          }
+        },
+        { "name": "Admin - Delete Tax", "request": { "method": "DELETE", "url": "{{varUri}}/tax/{{taxId}}" } }
+      ]
+    },
+    {
+      "name": "Upload Images",
+      "item": [
+        {
+          "name": "Upload Single",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [{ "key": "image", "type": "file", "src": "" }]
+            },
+            "url": "{{varUri}}/upload/single"
+          }
+        },
+        {
+          "name": "Upload Multiple",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [{ "key": "images", "type": "file", "src": "" }]
+            },
+            "url": "{{varUri}}/upload/multiple"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Wishlist",
+      "item": [
+        { "name": "Add To Wishlist", "request": { "method": "POST", "url": "{{varUri}}/wishlist/{{productId}}" } },
+        { "name": "Remove From Wishlist", "request": { "method": "DELETE", "url": "{{varUri}}/wishlist/{{productId}}" } },
+        { "name": "Get Wishlist", "request": { "method": "GET", "url": "{{varUri}}/wishlist" } }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "item": [
+        { "name": "Stats", "request": { "method": "GET", "url": "{{varUri}}/dashboard/stats" } },
+        { "name": "Sales", "request": { "method": "GET", "url": "{{varUri}}/dashboard/sales" } },
+        { "name": "Users", "request": { "method": "GET", "url": "{{varUri}}/dashboard/users" } },
+        { "name": "Products", "request": { "method": "GET", "url": "{{varUri}}/dashboard/products" } }
+      ]
+    }
+  ]
+}
