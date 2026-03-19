@@ -27,6 +27,7 @@ export class CreateProductDto {
   @Min(1)
   @Max(500)
   @Type(() => Number)
+  //   @IsNotEmpty()
   readonly quantity: number;
 
   @IsString()
