@@ -6,13 +6,16 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { CategoryModule } from './modules/category/category.module';
 import { SubCategoryModule } from './modules/sub-category/sub-category.module';
 import { ProductModule } from './modules/product/product.module';
+import { ProductController } from './modules/product/product.controller';
+import { BrandModule } from './modules/brand/brand.module';
+// sss
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRootAsync({
       useFactory: () => ({
-        uri: process.env.MONGO_URL,
+        uri: process.env.MONGO_URL || 'mongodb://localhost:27017/ecommerce',
       }),
     }),
     UsersModule,
@@ -20,6 +23,8 @@ import { ProductModule } from './modules/product/product.module';
     CategoryModule,
     SubCategoryModule,
     ProductModule,
+    BrandModule,
   ],
+  controllers: [ProductController],
 })
 export class AppModule {}

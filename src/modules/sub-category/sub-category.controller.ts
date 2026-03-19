@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { SubCategoryService } from './sub-category.service';
 import { CreateSubCategoryDto } from './sub-Category.dto';
-@Controller('sub-category')
+@Controller('subcategories')
 export class SubCategoryController {
   constructor(private readonly subCategoryService: SubCategoryService) {}
 
