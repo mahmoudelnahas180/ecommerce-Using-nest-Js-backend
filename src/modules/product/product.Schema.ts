@@ -35,7 +35,7 @@ export class Product extends Document {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'SubCategory',
-    required: true,
+    // required: true,
   })
   subCategory: mongoose.Types.ObjectId;
   @Prop({

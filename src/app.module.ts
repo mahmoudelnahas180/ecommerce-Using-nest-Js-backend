@@ -6,7 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { CategoryModule } from './modules/category/category.module';
 import { SubCategoryModule } from './modules/sub-category/sub-category.module';
 import { ProductModule } from './modules/product/product.module';
-import { ProductController } from './modules/product/product.controller';
+// import { ProductController } from './modules/product/product.controller';
 import { BrandModule } from './modules/brand/brand.module';
 // sss
 
@@ -25,6 +25,6 @@ import { BrandModule } from './modules/brand/brand.module';
     ProductModule,
     BrandModule,
   ],
-  controllers: [ProductController],
+  controllers: [],
 })
 export class AppModule {}
