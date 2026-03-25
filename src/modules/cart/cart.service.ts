@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { Cart } from './Cart.Schema';
 import { AddToCartDto } from './Dto/Addcart.dto';
 import { UpdateCartQuantityDto } from './Dto/Updatecart.dto';
+import { console } from 'inspector';
 
 @Injectable()
 export class CartService {
@@ -14,30 +15,18 @@ export class CartService {
       .populate({ path: 'CartItems.productId', model: 'Product' })
       .exec();
   }
-  async create(cartBody: AddToCartDto) {
+  async create(cartBody: AddToCartDto, userId: string) {
     const exisstProductIdInCArt = await this.cartModel.findOne({
-      'CartItems.productId': cartBody.productId,
+      userId: userId,
     });
+    console.log(55);
     if (exisstProductIdInCArt) {
-      throw new NotFoundException('Product already exists in cart');
+      console.log('exisstProductIdInCArt', exisstProductIdInCArt);
+      return 0;
+    } else {
+      console.log('cartBody', cartBody);
+      return 1;
     }
-    const newCart = await this.cartModel.updateOne(
-      { _id: cartBody.productId },
-      {
-        $push: {
-          CartItems: {
-            productId: cartBody.productId,
-            quantity: cartBody.quantity,
-          },
-        },
-      },
-    );
-
-    console.log(newCart);
-    console.log(exisstProductIdInCArt);
-    console.log(cartBody.productId);
-    console.log(newCart);
-    return newCart;
   }
   async getCartOne(id: string): Promise<Cart> {
     const exsistCart = await this.cartModel.findById(id).populate('user');

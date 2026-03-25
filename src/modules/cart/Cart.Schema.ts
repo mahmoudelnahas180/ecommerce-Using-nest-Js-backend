@@ -1,6 +1,6 @@
 import { Document, Schema as MongooseSchema, Types } from 'mongoose';
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-
+import { User } from '../auth/User.schema';
 @Schema({ timestamps: true })
 export class Cart extends Document {
   @Prop({
@@ -42,29 +42,32 @@ export class Cart extends Document {
   totalPriceAfterDiscount: number;
 
   @Prop({
-    type: {
-      name: { type: String, required: true },
-      couponId: {
-        type: MongooseSchema.Types.ObjectId,
-        ref: 'Coupon',
-        required: true,
+    type: [
+      {
+        name: { type: String, required: true },
+        couponId: {
+          type: MongooseSchema.Types.ObjectId,
+          ref: 'Coupon',
+          required: true,
+        },
       },
-    },
-
-    default: null,
+    ],
+    default: [],
   })
-  coupons: {
-    name: string;
-    couponId: Types.ObjectId;
-  };
+  coupons: [
+    {
+      name: string;
+      couponId: Types.ObjectId;
+    },
+  ];
 
   @Prop({
     type: MongooseSchema.Types.ObjectId,
-    ref: 'User',
+    ref: User.name,
     required: true,
     unique: true,
   })
-  user: Types.ObjectId;
+  userId: Types.ObjectId;
 }
 
 export const CartSchema = SchemaFactory.createForClass(Cart);
