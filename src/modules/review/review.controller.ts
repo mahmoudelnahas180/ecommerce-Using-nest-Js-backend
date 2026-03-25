@@ -11,7 +11,7 @@ import {
 import { ReviewService } from './review.service';
 import { CreateReviewDto } from './Review.Dto';
 
-@Controller('review')
+@Controller('reviews')
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
   @Post('')

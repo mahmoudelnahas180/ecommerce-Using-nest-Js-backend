@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ICreateUser, ICreateUserResponse, IUsers } from './users.interface';
-import { CreateUserDto, UpdateUserDto } from '../auth/CreateUserDto';
+import { CreateUserDto, UpdateUserDto } from './Dto/CreateUserDto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from 'src/modules/auth/User.schema';
@@ -12,14 +12,15 @@ export class UsersService {
     @InjectModel(User.name) private readonly userModel: Model<IUsers>,
   ) {}
   private users: IUsers[] = [];
-  getUsers(): any {
-    return {
-      message: 'Users fetched successfully',
-      data: [4, 5, 6],
-    };
-  }
-  async getAllUsers() {
-    const users = await this.userModel.find();
+
+  async getAllUsers(
+    page: string,
+    limit: string,
+  ): Promise<ICreateUserResponse[]> {
+    const users = await this.userModel
+      .find()
+      .skip((parseInt(page) - 1) * parseInt(limit))
+      .limit(parseInt(limit));
     return users;
   }
   async createUser(body: CreateUserDto): Promise<ICreateUserResponse> {

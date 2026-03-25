@@ -22,9 +22,9 @@ export class CreateReviewDto {
   @IsString()
   @IsNotEmpty()
   @IsMongoId()
-  user: string;
+  userId: string;
   @IsString()
   @IsNotEmpty()
   @IsMongoId()
-  product: string;
+  productId: string;
 }

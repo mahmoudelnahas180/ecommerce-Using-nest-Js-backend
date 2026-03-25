@@ -1,14 +1,12 @@
 import {
+  BadRequestException,
   ForbiddenException,
-  HttpException,
-  HttpStatus,
   Injectable,
 } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { UserSchema } from './User.schema';
 import { User } from './User.schema';
-import { CreateUserDto, SignInDto } from './CreateUserDto';
+import { SignInDto, SignUpDto } from './CreateUserDto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 @Injectable()
@@ -17,17 +15,23 @@ export class AuthService {
     @InjectModel(User.name) private userModel: Model<User>,
     private jwtService: JwtService,
   ) {}
-  async signUp(createUserDto: CreateUserDto) {
+  async signUp(signUpDto: SignUpDto) {
     const existUser = await this.userModel.findOne({
-      email: createUserDto.email,
+      email: signUpDto.email,
     });
     if (existUser) {
-      throw new Error('User already exists');
+      throw new BadRequestException('User already exists');
     }
-    const hashPassword = await bcrypt.hash(createUserDto.password, 10);
+    const matchedPassword = signUpDto.password === signUpDto.confirmPassword;
+    if (!matchedPassword) {
+      throw new BadRequestException(
+        'Password and confirm password do not match',
+      );
+    }
+    const hashPassword = await bcrypt.hash(signUpDto.password, 10);
     const user = await this.userModel.create({
-      name: createUserDto.name,
-      email: createUserDto.email,
+      name: signUpDto.name,
+      email: signUpDto.email,
       password: hashPassword,
     });
     return user;

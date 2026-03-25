@@ -9,6 +9,8 @@ import { ProductModule } from './modules/product/product.module';
 // import { ProductController } from './modules/product/product.controller';
 import { BrandModule } from './modules/brand/brand.module';
 import { ReviewModule } from './modules/review/review.module';
+import { CartModule } from './modules/cart/cart.module';
+import { CouponModule } from './modules/coupon/coupon.module';
 // sss
 
 @Module({
@@ -26,6 +28,8 @@ import { ReviewModule } from './modules/review/review.module';
     ProductModule,
     BrandModule,
     ReviewModule,
+    CartModule,
+    CouponModule,
   ],
   controllers: [],
 })

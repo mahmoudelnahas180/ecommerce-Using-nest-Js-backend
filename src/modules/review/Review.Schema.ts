@@ -17,13 +17,13 @@ export class Review extends Document {
     ref: 'User',
     required: true,
   })
-  user: mongoose.Types.ObjectId;
+  userId: mongoose.Types.ObjectId;
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Product',
     required: true,
   })
-  product: mongoose.Types.ObjectId;
+  productId: mongoose.Types.ObjectId;
 }
 
 export const ReviewSchema = SchemaFactory.createForClass(Review);
