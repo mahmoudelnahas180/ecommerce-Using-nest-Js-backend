@@ -6,6 +6,10 @@ export class Cart extends Document {
   @Prop({
     type: [
       {
+        _id: {
+          type: MongooseSchema.Types.ObjectId,
+          auto: true,
+        },
         productId: {
           type: MongooseSchema.Types.ObjectId,
           ref: 'Product',
@@ -16,10 +20,7 @@ export class Cart extends Document {
           default: 1,
           min: [1, 'quantity must be at least 1'],
         },
-        price: {
-          type: Number,
-          required: true,
-        },
+
         color: {
           type: String,
           default: '',
@@ -29,9 +30,10 @@ export class Cart extends Document {
     default: [],
   })
   CartItems: {
+    _id?: Types.ObjectId;
     productId: Types.ObjectId;
     quantity: number;
-    price: number;
+
     color?: string;
   }[];
 
