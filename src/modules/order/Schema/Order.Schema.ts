@@ -1,12 +1,12 @@
 import { Document, Schema as MongooseSchema, Types } from 'mongoose';
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { User } from '../auth/User.schema';
+import { User } from '../../auth/User.schema';
 @Schema({ timestamps: true })
 export class Order extends Document {
   @Prop({
     type: MongooseSchema.Types.ObjectId,
     ref: User.name,
-    required: true,
+    required: false,
     unique: true,
   })
   userId: Types.ObjectId;
@@ -44,13 +44,10 @@ export class Order extends Document {
 
     color?: string;
   }[];
-
-  @Prop({ type: Number, default: 0 })
   totalPrice: number;
 
   @Prop({ type: Number, default: 0 })
   totalPriceAfterDiscount: number;
-
   @Prop({
     type: [
       {
@@ -58,18 +55,50 @@ export class Order extends Document {
         couponId: {
           type: MongooseSchema.Types.ObjectId,
           ref: 'Coupon',
-          required: true,
         },
       },
     ],
-    default: [],
   })
-  coupons: [
-    {
-      name: string;
-      couponId: Types.ObjectId;
-    },
-  ];
+  coupons: {
+    name: string;
+    couponId: Types.ObjectId;
+  }[];
+  @Prop({
+    type: [
+      {
+        type: String,
+        enum: ['cash', 'card'],
+        required: true,
+      },
+    ],
+  })
+  paymentMethod: 'cash' | 'card';
+  @Prop({
+    type: String,
+    enum: ['pending', 'paid', 'cancelled', 'failed'],
+    default: 'pending',
+  })
+  paymentStatus: 'pending' | 'paid' | 'cancelled' | 'failed';
+  @Prop({
+    type: String,
+    enum: ['pending', 'processing', 'shipped', 'delivered', 'cancelled'],
+    default: 'pending',
+  })
+  orderStatus: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+  @Prop({
+    type: MongooseSchema.Types.ObjectId,
+    ref: 'ShippingPrices  ',
+    // required: true,
+  })
+  shipingAddress: Types.ObjectId;
+  // stripeData
+  @Prop({ type: String })
+  stripeSessionId: string;
+
+  @Prop({ type: String })
+  stripePaymentIntentId: string;
+  @Prop({ type: Date })
+  deliveryDate: Date;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);
