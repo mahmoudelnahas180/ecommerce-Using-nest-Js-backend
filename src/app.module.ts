@@ -11,6 +11,10 @@ import { BrandModule } from './modules/brand/brand.module';
 import { ReviewModule } from './modules/review/review.module';
 import { CartModule } from './modules/cart/cart.module';
 import { CouponModule } from './modules/coupon/coupon.module';
+import { OrderModule } from './modules/order/order.module';
+import { TaxModule } from './modules/tax/tax.module';
+import { ShipingModule } from './modules/shiping/shiping.module';
+import { ShippingPriceModule } from './modules/shipping-price/shipping-price.module';
 // sss
 
 @Module({
@@ -30,6 +34,10 @@ import { CouponModule } from './modules/coupon/coupon.module';
     ReviewModule,
     CartModule,
     CouponModule,
+    OrderModule,
+    TaxModule,
+    ShipingModule,
+    ShippingPriceModule,
   ],
   controllers: [],
 })
